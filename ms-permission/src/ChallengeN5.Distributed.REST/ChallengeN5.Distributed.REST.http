@@ -1,0 +1,34 @@
+@ChallengeN5.Distributed.REST_HostAddress = http://localhost:5075
+@OpenSearch = http://localhost:9200
+
+
+### Get Permissions
+
+GET {{ChallengeN5.Distributed.REST_HostAddress}}/permission
+Accept: application/json
+
+### Create Permission
+
+POST {{ChallengeN5.Distributed.REST_HostAddress}}/permission
+Content-Type: application/json
+
+{
+  "forename": "Challenge",
+  "surname": "N5",
+  "type": 2
+}
+
+### Modify Permissions
+
+PUT {{ChallengeN5.Distributed.REST_HostAddress}}/permission/2
+Content-Type: application/json
+
+{
+  "forename": "Challenge",
+  "surname": "N5 Modify",
+  "type": 2
+}
+###
+
+GET {{OpenSearch}}/indexpermission/_search?filter_path=hits.hits._source
+Accept: application/json

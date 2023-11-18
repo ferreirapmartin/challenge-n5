@@ -1,0 +1,6 @@
+node_modules
+*.js
+.husky
+build
+*.d.ts
+docs

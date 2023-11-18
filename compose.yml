@@ -1,0 +1,99 @@
+version: "3.9"
+
+services:
+  web:
+    build:
+      context: web
+    ports:
+      - "3500:80/tcp"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - api
+      - db
+      - kafka
+      - elasticsearch
+    restart: on-failure
+  api:
+    build:
+      context: ms-permission/src
+      dockerfile: ./ChallengeN5.Distributed.REST/Dockerfile
+    ports:
+      - "5075:8080/tcp"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    depends_on:
+      - db
+      - kafka
+      - elasticsearch
+    restart: on-failure
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-CU9-ubuntu-20.04
+    restart: always
+    environment:
+      - MSSQL_SA_PASSWORD=ChallengeN5
+      - ACCEPT_EULA=Y
+      - MSSQL_DATA_DIR=/var/opt/sqlserver/data
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql-data:/var/opt/mssql/
+      - sqldata:/var/opt/sqlserver/data
+  zookeeper:
+    image: bitnami/zookeeper
+    restart: always
+    ports:
+      - "2181:2181"
+    volumes:
+      - "zookeeper_data:/bitnami"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka:
+    image: bitnami/kafka
+    ports:
+      - "9092:9092"
+    restart: always
+    volumes:
+      - "kafka_data:/bitnami"
+    environment:
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+    depends_on:
+      - zookeeper
+
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.1
+    ports:
+      - 9200:9200
+    restart: always
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+  
+volumes:
+  mssql-data:
+    driver: local
+  sqldata:
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local
+  elasticsearch-data:
+
+networks:
+  default:
+    name: challenge_n5-network
