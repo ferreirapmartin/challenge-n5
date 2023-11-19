@@ -1,0 +1,42 @@
+{
+    "languages": {
+        "en": "English",
+        "es": "Spanish"
+    },
+    "common": {
+        "modify": "Modify",
+        "cancel": "Cancel",
+        "save": "Save"
+    },
+    "theme": {
+        "title": "Theme: {{theme}}",
+        "default": "Default",
+        "blue": "Blue",
+        "purple": "Purple"
+    },
+    "permissions": {
+        "title": "Permissions",
+        "labels": {
+            "forename": "Forename",
+            "surname": "Surname",
+            "createdDate": "Created Date",
+            "permissionType": "Permission Type"
+        },
+        "modify": {
+            "title": "Modify Permission"
+        },
+        "request": {
+            "title": "Request Permission"
+        }
+    },
+    "errors": {
+        "unexpected": "Sorry, an unexpected error has occurred."
+    },
+    "validations": {
+        "required": "This field is required"
+    },
+    "notifications": {
+        "permissionRequestSuccess": "The permission was requested successfully",
+        "permissionModifySuccess": "The permission was modified successfully"
+    }
+}

@@ -1,9 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
-
+import { all } from 'redux-saga/effects';
 import permissionReducer from '../state/permissionSlice';
 import userReducer from '../state/userSlice';
-import { permissionSaga } from '../state';
+import { permissionSaga, errorSaga } from '../state';
 
 const sagaMiddleWare = createSagaMiddleware();
 
@@ -12,7 +12,12 @@ const store = configureStore({
   middleware: [sagaMiddleWare],
 });
 
-sagaMiddleWare.run(permissionSaga);
+function* rootSaga() {
+  yield all([permissionSaga(), errorSaga()]);
+  // code after all-effect
+}
+
+sagaMiddleWare.run(rootSaga);
 
 export type RootState = ReturnType<typeof store.getState>;
 

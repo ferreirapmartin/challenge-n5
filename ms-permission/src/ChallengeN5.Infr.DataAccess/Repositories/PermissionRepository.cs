@@ -20,5 +20,7 @@ namespace ChallengeN5.Infr.DataAccess.Repositories
         public void Add(Permission entity) => context.Add(entity);
 
         public async Task<Permission?> GetById(int id) => await context.Permissions.Where(i => i.Id == id).Include(i => i.Type).FirstOrDefaultAsync();
+
+        public async Task<PermissionType?> GetPermissionTypeById(int id) => await context.PermissionTypes.FirstOrDefaultAsync(i => i.Id == id);
     }
 }

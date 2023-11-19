@@ -2,11 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <InvariantGlobalization>true</InvariantGlobalization>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <InvariantGlobalization>false</InvariantGlobalization>
+    <DockerfileRunArguments>--network challenge_n5-network</DockerfileRunArguments>
   </PropertyGroup>
 
   <ItemGroup>

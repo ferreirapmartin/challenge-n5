@@ -1,7 +1,8 @@
 using ChallengeN5.Application.Commands.RequestPermission;
 using ChallengeN5.Application.Commands.UpdatePermission;
+using ChallengeN5.Application.Exceptions;
 using ChallengeN5.Application.Queries.FindPermission;
-using ChallengeN5.Distributed.REST.Messages;
+using ChallengeN5.Distributed.REST.Model;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,23 +32,29 @@ namespace ChallengeN5.Distributed.REST.Controllers
         [HttpPost(Name = "RequestPermission")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Create(RequestPermissionRequest request)
+        public async Task<IActionResult> Create([FromBody] RequestPermissionModel request)
         {
-            await _mediator.Send(new RequestPermissionCommand(request.Forename, request.Surname, request.Type));
+            await _mediator.Send(new RequestPermissionCommand(request.Forename, request.Surname, request.Type.Value));
 
             return Created();
         }
 
-        [HttpPut("{id}",Name = "ModifyPermission")]
+        [HttpPut("{id}", Name = "ModifyPermission")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Update(int id, UpdatePermissionRequest request)
+        public async Task<IActionResult> Update(int id, UpdatePermissionModel request)
         {
-            await _mediator.Send(new UpdatePermissionCommand(id, request.Forename, request.Surname, request.Type));
+            try
+            {
+                await _mediator.Send(new UpdatePermissionCommand(id, request.Forename, request.Surname, request.Type.Value));
+            }
+            catch (PermissionNotFoundException)
+            {
+                return NotFound();
+            }
 
             return Ok();
         }

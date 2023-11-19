@@ -8,8 +8,10 @@ import {
 } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 import EditIcon from '@mui/icons-material/Edit';
+import { useTranslation } from 'react-i18next';
 import { findPermissionRequested, permissionSelector, setPermissionEdit } from '../state';
 import { Permission } from '../types';
+
 
 const pageSizeOptions = [10];
 
@@ -22,6 +24,7 @@ const initialState = {
 };
 
 const PermissionTable = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const permissions = useSelector(permissionSelector);
 
@@ -37,23 +40,23 @@ const PermissionTable = () => {
     { field: 'id', headerName: 'ID', width: 90 },
     {
       field: 'forename',
-      headerName: 'Forename',
+      headerName: t('permissions.labels.forename'),
       width: 150,
     },
     {
       field: 'surname',
-      headerName: 'Surname',
+      headerName: t('permissions.labels.surname'),
       width: 150,
     },
     {
       field: 'createdDate',
-      headerName: 'Created Date',
+      headerName: t('permissions.labels.createdDate'),
       type: 'date',
-      width: 110,
+      width: 130,
     },
     {
       field: 'permissionType',
-      headerName: 'Permission Type',
+      headerName: t('permissions.labels.permissionType'),
       sortable: false,
       width: 220,
       valueGetter: (params: GridValueGetterParams) => params.row.type.description,
@@ -65,7 +68,7 @@ const PermissionTable = () => {
         <GridActionsCellItem
           icon={<EditIcon />}
           onClick={() => editHandler(params.row)}
-          label="Modify"
+          label={t('common.modify')}
         />,
       ],
     },

@@ -1,6 +1,7 @@
 const path = require('path');
 const { DefinePlugin } = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const is_prod = process.env.NODE_ENV == 'production';
 
@@ -25,6 +26,11 @@ const config = {
   plugins: [
     new DefinePlugin({
       'process.env': JSON.stringify(process.env),
+    }),
+    new CopyPlugin({
+      patterns: [
+        { from: 'public', to: '' }, //to the dist root directory
+      ],
     }),
     is_prod
       ? new HtmlWebpackPlugin({

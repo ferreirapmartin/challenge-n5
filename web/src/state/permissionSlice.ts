@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Permission, PermissionType, PermissionForm } from '../types';
+import { Permission, PermissionType, PermissionForm, HttpRequestError } from '../types';
 import { RootState } from '../config';
 
 interface PermissionState {
@@ -42,10 +42,11 @@ export const permissionSlice = createSlice({
       state.error = false;
       state.loading = false;
     },
-    findPermissionFailure: state => {
+    findPermissionFailure: (state, payload: PayloadAction<HttpRequestError>) => {
       state.permissions = [];
       state.error = true;
       state.loading = false;
+      console.error(payload);
     },
     setPermissionEdit: (state, { payload }: PayloadAction<Permission | null>) => {
       state.permissionEdit = payload;
@@ -58,8 +59,9 @@ export const permissionSlice = createSlice({
     permissionModifySuccess: state => {
       state.permissionForm = null;
     },
-    permissionModifyFailure: state => {
+    permissionModifyFailure: (state, payload: PayloadAction<HttpRequestError>) => {
       state.permissionForm = null;
+      console.error(payload);
     },
     permissionRequestRequested: (state, { payload }: PayloadAction<PermissionForm>) => {
       state.permissionEdit = null;
@@ -68,13 +70,12 @@ export const permissionSlice = createSlice({
     permissionRequestSuccess: state => {
       state.permissionForm = null;
     },
-    permissionRequestFailure: state => {
+    permissionRequestFailure: (state, payload: PayloadAction<HttpRequestError>) => {
       state.permissionForm = null;
+      console.error(payload);
     },
   },
 });
-
-//
 
 export const {
   findPermissionRequested,

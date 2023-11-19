@@ -1,8 +1,16 @@
 # Challenge N5
 
-Challenge N5, en cual el front fue implementado con React 18, utilizando MUI, Redux, Redux Sagas, Axios, Formik y YUP.
+Para este challenge, se implementó la siguiente arquitectura:
 
-La API REST se desarrollo con .Net Core 8, utilizando una arquitectura DDD con CQRS. Y EntityFrameworkCore como ORM para la base de datos SQL Server.
+![Architecture Diagram](docs/architecture_diagram.png?raw=true "Architecture Diagram")
+
+El frontend (SPA) se desarrolló utilizando React 18 con TypeScript. Para gestionar el estado de la aplicación se utilizó Redux junto con Redux-Saga para el manejo de los side effects. Como Web System, Material-UI, específicamente el package MUI. Para las validaciones de formularios se optó por Formik y YUP. Además, la aplicación es multi-idioma (escritura occidental) a través de i18next.
+
+La API REST se implementó con .NET Core 8 siguiendo una arquitectura DDD con CQRS (utilizando el patrón de diseño Mediator con el package MediatR). Para el manejo de inyección de dependencia se utilizó Microsoft.Extensions.DependencyInjection (nativo). Como ORM Entity Framework Core. Para la comunicación con Apache Kafka, Confluent.Kafka. Y, para ElasticSearch, el package "NEST".
+
+El "backend" consta de 4 capas:
+
+![Architecture Diagram](docs/layers.png?raw=true "Architecture Diagram")
 
 ## Getting Started
 
@@ -73,17 +81,3 @@ Abrir un navegador e ingresar a: http://localhost:9200/\_search?filter_path=hits
 Por cuestión de tiempo, no pude terminar lo siguiente:
 
 - Units e Integrations tests
-- Validaciones en la API. Por ejemplo, si se quiere dar de alta un permiso con un PermissionType que no existe, lo indique con un 400 (Bad Request) y su detalle.
-
-Si bien, no se pedia, me hubiese gustado agregar:
-
-- En el front:
-  - Utilizar i18Next para manejar multilenguaje
-  - Agregar un selector de temas
-  - Notificar la finalización de una acción (correcta o incorrecta)
-- En la API:
-  - Utilizar una base de datos como MongoDB para almacenar los eventos, y así poder trabajar bien con DDD y Event Sourcing
-- Con ElasticSearch:
-  - Agregar Kibana
-
-Además de mejorar la documentación, agregando diagramas y más detalle en este readme.

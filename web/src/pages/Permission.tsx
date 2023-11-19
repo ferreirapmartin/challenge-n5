@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Stack, Typography } from '@mui/material';
 import styled from '@emotion/styled';
+import { useTranslation } from 'react-i18next';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { PermissionDetail, PermissionTable } from '../components';
 import { permissionEditSelector, permissionModifyRequested, setPermissionEdit } from '../state';
@@ -12,6 +13,7 @@ const ActionContainer = styled.div`
 `;
 
 const Permission = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const permissionEdit = useSelector(permissionEditSelector);
@@ -24,17 +26,17 @@ const Permission = () => {
   return (
     <>
       <Stack spacing={2}>
-        <Typography variant="h3">Permissions</Typography>
+        <Typography variant="h3">{t('permissions.title')}</Typography>
         <ActionContainer>
           <Button onClick={clickHandler} size="small">
-            Request Permission
+            {t('permissions.request.title')}
           </Button>
         </ActionContainer>
         <PermissionTable />
       </Stack>
       {permissionEdit && (
         <PermissionDetail
-          title="Modify Permission"
+          title={t('permissions.modify.title')}
           permission={permissionEdit}
           saveAction={permissionModifyRequested}
           handleCancel={handleCancelEdit}

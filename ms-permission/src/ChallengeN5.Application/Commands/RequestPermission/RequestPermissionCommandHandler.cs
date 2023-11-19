@@ -18,18 +18,20 @@ namespace ChallengeN5.Application.Commands.RequestPermission
 
         public async Task Handle(RequestPermissionCommand request, CancellationToken cancellationToken)
         {
-            var permission = new Permission(request.Forename, request.Surname, request.PermissionType);
-
             using (var scope = _serviceProvider.CreateScope())
             {
                 using (var uow = scope.ServiceProvider.GetRequiredService<IUnitOfWork>())
                 {
+                    var permissionType = await uow.PermissionRepository.GetPermissionTypeById(request.PermissionType);
+
+                    var permission = new Permission(request.Forename, request.Surname, permissionType);
+
                     uow.PermissionRepository.Add(permission);
                     await uow.SaveChangesAsync();
+
+                    await _domainEventDispatcher.DispatchEventsAsync(permission);
                 }
             }
-
-            await _domainEventDispatcher.DispatchEventsAsync(permission);
         }
     }
 }

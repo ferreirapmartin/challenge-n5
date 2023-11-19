@@ -15,6 +15,7 @@ import {
   FormHelperText,
 } from '@mui/material';
 import { AnyAction } from '@reduxjs/toolkit';
+import { Trans, useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Permission, PermissionForm } from '../types';
 import { permissionTypeSelector } from '../state';
@@ -27,12 +28,19 @@ interface Props {
 }
 
 const validationSchema = yup.object({
-  forename: yup.string().required(),
-  surname: yup.string().required(),
+  forename: yup
+    .string()
+    .required()
+    .matches(/^(?!\s+$).*/, { message: <Trans i18nKey="validations.required" /> }),
+  surname: yup
+    .string()
+    .required()
+    .matches(/^(?!\s+$).*/, { message: <Trans i18nKey="validations.required" /> }),
   type: yup.number().required(),
 });
 
 const PermissionDetail = ({ permission, title, saveAction, handleCancel }: Props) => {
+  const { t } = useTranslation();
   const permissionType = useSelector(permissionTypeSelector);
   const dispatch = useDispatch();
   const handleSubmit = (values: PermissionForm) => {
@@ -50,6 +58,8 @@ const PermissionDetail = ({ permission, title, saveAction, handleCancel }: Props
     onSubmit: handleSubmit,
   });
 
+  const canSave = formik.isValid && formik.dirty;
+
   return (
     <Dialog onClose={handleCancel} open>
       <DialogTitle>{title}</DialogTitle>
@@ -60,7 +70,7 @@ const PermissionDetail = ({ permission, title, saveAction, handleCancel }: Props
               fullWidth
               id="forename"
               name="forename"
-              label="Forename"
+              label={t('permissions.labels.forename')}
               value={formik.values.forename}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -72,7 +82,7 @@ const PermissionDetail = ({ permission, title, saveAction, handleCancel }: Props
               fullWidth
               id="surname"
               name="surname"
-              label="Surname"
+              label={t('permissions.labels.surname')}
               value={formik.values.surname}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -82,13 +92,13 @@ const PermissionDetail = ({ permission, title, saveAction, handleCancel }: Props
             />
             <FormControl fullWidth>
               <InputLabel variant="standard" id="type-label">
-                Permission Type
+                {t('permissions.labels.permissionType')}
               </InputLabel>
               <Select
                 id="type"
                 name="type"
                 labelId="type-label"
-                label="Permission Type"
+                label={t('permissions.labels.permissionType')}
                 value={formik.values.type}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -109,10 +119,16 @@ const PermissionDetail = ({ permission, title, saveAction, handleCancel }: Props
             </FormControl>
             <Stack direction="row" spacing={5}>
               <Button color="primary" fullWidth type="button" onClick={handleCancel}>
-                Cancel
+                {t('common.cancel')}
               </Button>
-              <Button color="primary" variant="contained" fullWidth type="submit">
-                Save
+              <Button
+                color="primary"
+                variant="contained"
+                fullWidth
+                type="submit"
+                disabled={!canSave}
+              >
+                {t('common.save')}
               </Button>
             </Stack>
           </Stack>

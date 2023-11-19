@@ -7,5 +7,6 @@ namespace ChallengeN5.Domain.Contracts
         Task<List<Permission>> GetAll();
         Task<Permission?> GetById(int id);
         void Add(Permission entity);
+        Task<PermissionType?> GetPermissionTypeById(int id);
     }
 }

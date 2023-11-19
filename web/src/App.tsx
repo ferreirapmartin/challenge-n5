@@ -1,15 +1,24 @@
+import { Suspense } from 'react';
 import { Provider } from 'react-redux';
-import { ThemeProvider } from '@mui/material';
 import { RouterProvider } from 'react-router-dom';
-import { store, theme } from './config';
+import { SnackbarProvider } from 'notistack';
+import { store } from './config';
 import { router } from './AppRouter';
+import './config/i18n.config';
+import { Notifier, ThemeSwitcherProvider } from './components';
+
 
 const App = () => (
-  <ThemeProvider theme={theme}>
+  <Suspense fallback="Loading ...">
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <SnackbarProvider maxSnack={3}>
+        <Notifier />
+        <ThemeSwitcherProvider>
+          <RouterProvider router={router} />
+        </ThemeSwitcherProvider>
+      </SnackbarProvider>
     </Provider>
-  </ThemeProvider>
+  </Suspense>
 );
 
 export default App;

@@ -1,0 +1,42 @@
+{
+    "languages": {
+        "en": "Inglés",
+        "es": "Español"
+    },
+    "common": {
+        "modify": "Modificar",
+        "cancel": "Cancelar",
+        "save": "Guardar"
+    },
+    "theme": {
+        "title": "Tema: {{theme}}",
+        "default": "Default",
+        "blue": "Azul",
+        "purple": "Morado"
+    },
+    "permissions": {
+        "title": "Permisos",
+        "labels": {
+            "forename": "Nombre",
+            "surname": "Apellido",
+            "createdDate": "Fecha de creación",
+            "permissionType": "Tipo de Permiso"
+        },
+        "modify": {
+            "title": "Modificar Permiso"
+        },
+        "request": {
+            "title": "Solicitar Permiso"
+        }
+    },
+    "errors": {
+        "unexpected": "Lo sentimos, ha ocurrido un error inesperado."
+    },
+    "validations": {
+        "required": "Este campo es obligatorio"
+    },
+    "notifications": {
+        "permissionRequestSuccess": "El permiso fue solicitado con éxito",
+        "permissionModifySuccess": "El permiso fue modificado con éxito"
+    }
+}

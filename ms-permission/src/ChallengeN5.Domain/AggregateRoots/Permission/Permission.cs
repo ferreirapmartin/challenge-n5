@@ -1,5 +1,6 @@
 ﻿using ChallengeN5.Domain.Core;
 using ChallengeN5.Domain.Events;
+using ChallengeN5.Domain.Exceptions;
 
 namespace ChallengeN5.Domain.AggregateRoots.Permission
 {
@@ -15,16 +16,26 @@ namespace ChallengeN5.Domain.AggregateRoots.Permission
 
         private Permission() { }
 
-        public Permission(string forename, string surname, int type)
+        public Permission(string forename, string surname, PermissionType permissionType)
         {
-            ApplyChange(new PermissionRequestedEvent(this, forename, surname, type));
+            if (string.IsNullOrWhiteSpace(forename))
+                throw new NullOrEmptyException(nameof(forename));
+
+            if (string.IsNullOrWhiteSpace(surname))
+                throw new NullOrEmptyException(nameof(surname));
+
+            if (permissionType == null)
+                throw new PermissionTypeNotFoundException();
+
+
+            ApplyChange(new PermissionRequestedEvent(this, forename, surname, permissionType));
         }
 
         public void Apply(PermissionRequestedEvent @event)
         {
             Forename = @event.Forename;
             Surname = @event.Surname;
-            TypeId = @event.Type;
+            Type = @event.Type;
             CreatedDate = DateOnly.FromDateTime(DateTime.Now);
         }
 
